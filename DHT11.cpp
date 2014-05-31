@@ -2,61 +2,44 @@
   DHT Temperature & Humidity Sensor library for Arduino.
 
   Features:
-  - Support for DHT11 and DHT22/AM2302/RHT03
-  - Auto detect sensor model
+  - Support for DHT11 only
   - Very low memory footprint
   - Very small code
 
   http://www.github.com/markruys/arduino-DHT
 
   Written by Mark Ruys, mark@paracas.nl.
+  Edited by Marcos Meli
 
   BSD license, check license.txt for more information.
   All text above must be included in any redistribution.
 
   Datasheets:
   - http://www.micro4you.com/files/sensor/DHT11.pdf
-  - http://www.adafruit.com/datasheets/DHT22.pdf
-  - http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Sensors/Weather/RHT03.pdf
-  - http://meteobox.tk/files/AM2302.pdf
 
-  Changelog:
-   2013-06-10: Initial version
-   2013-06-12: Refactored code
-   2013-07-01: Add a resetTimer method
  ******************************************************************/
 
-#include "DHT.h"
+#include "DHT11.h"
 
-void DHT::setup(uint8_t pin, DHT_MODEL_t model)
+void DHT11::setup(uint8_t pin)
 {
-  DHT::pin = pin;
-  DHT::model = model;
-  DHT::resetTimer(); // Make sure we do read the sensor in the next readSensor()
+  DHT11::pin = pin;
+  DHT11::resetTimer(); // Make sure we do read the sensor in the next readSensor()
 
-  if ( model == AUTO_DETECT) {
-    DHT::model = DHT22;
-    readSensor();
-    if ( error == ERROR_TIMEOUT ) {
-      DHT::model = DHT11;
-      // Warning: in case we auto detect a DHT11, you should wait at least 1000 msec
-      // before your first read request. Otherwise you will get a time out error.
-    }
-  }
 }
 
-void DHT::resetTimer()
+void DHT11::resetTimer()
 {
   DHT::lastReadTime = millis() - 3000;
 }
 
-float DHT::getHumidity()
+float DHT11::getHumidity()
 {
   readSensor();
   return humidity;
 }
 
-float DHT::getTemperature()
+float DHT11::getTemperature()
 {
   readSensor();
   return temperature;
@@ -64,7 +47,7 @@ float DHT::getTemperature()
 
 #ifndef OPTIMIZE_SRAM_SIZE
 
-const char* DHT::getStatusString()
+const char* DHT11::getStatusString()
 {
   switch ( error ) {
     case DHT::ERROR_TIMEOUT:
@@ -87,13 +70,13 @@ prog_char P_OK[]       PROGMEM = "OK";
 prog_char P_TIMEOUT[]  PROGMEM = "TIMEOUT";
 prog_char P_CHECKSUM[] PROGMEM = "CHECKSUM";
 
-const char *DHT::getStatusString() {
+const char *DHT11::getStatusString() {
   prog_char *c;
   switch ( error ) {
-    case DHT::ERROR_CHECKSUM:
+    case DHT11::ERROR_CHECKSUM:
       c = P_CHECKSUM; break;
 
-    case DHT::ERROR_TIMEOUT:
+    case DHT11::ERROR_TIMEOUT:
       c = P_TIMEOUT; break;
 
     default:
@@ -108,13 +91,13 @@ const char *DHT::getStatusString() {
 
 #endif
 
-void DHT::readSensor()
+void DHT11::readSensor()
 {
   // Make sure we don't poll the sensor too often
   // - Max sample rate DHT11 is 1 Hz   (duty cicle 1000 ms)
-  // - Max sample rate DHT22 is 0.5 Hz (duty cicle 2000 ms)
+
   unsigned long startTime = millis();
-  if ( (unsigned long)(startTime - lastReadTime) < (model == DHT11 ? 999L : 1999L) ) {
+  if ( (unsigned long)(startTime - lastReadTime) < (999L) ) {
     return;
   }
   lastReadTime = startTime;
@@ -126,13 +109,8 @@ void DHT::readSensor()
 
   digitalWrite(pin, LOW); // Send start signal
   pinMode(pin, OUTPUT);
-  if ( model == DHT11 ) {
-    delay(18);
-  }
-  else {
-    // This will fail for a DHT11 - that's how we can detect such a device
-    delayMicroseconds(800);
-  }
+  
+  delay(18);
 
   pinMode(pin, INPUT);
   digitalWrite(pin, HIGH); // Switch bus to receive data
@@ -189,12 +167,8 @@ void DHT::readSensor()
 
   // Store readings
 
-  if ( model == DHT11 ) {
     humidity = rawHumidity >> 8;
     temperature = rawTemperature >> 8;
-  }
-  else {
-    humidity = rawHumidity * 0.1;
 
     if ( rawTemperature & 0x8000 ) {
       rawTemperature = -(int16_t)(rawTemperature & 0x7FFF);
