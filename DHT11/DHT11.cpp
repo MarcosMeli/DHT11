@@ -1,5 +1,5 @@
 /******************************************************************
-  DHT Temperature & Humidity Sensor library for Arduino.
+  DHT11 Temperature & Humidity Sensor library for Arduino.
 
   Features:
   - Support for DHT11 only
@@ -30,7 +30,7 @@ void DHT11::setup(uint8_t pin)
 
 void DHT11::resetTimer()
 {
-  DHT::lastReadTime = millis() - 3000;
+  DHT11::lastReadTime = millis() - 3000;
 }
 
 float DHT11::getHumidity()
@@ -50,10 +50,10 @@ float DHT11::getTemperature()
 const char* DHT11::getStatusString()
 {
   switch ( error ) {
-    case DHT::ERROR_TIMEOUT:
+    case DHT11::ERROR_TIMEOUT:
       return "TIMEOUT";
 
-    case DHT::ERROR_CHECKSUM:
+    case DHT11::ERROR_CHECKSUM:
       return "CHECKSUM";
 
     default:
@@ -167,14 +167,13 @@ void DHT11::readSensor()
 
   // Store readings
 
-    humidity = rawHumidity >> 8;
-    temperature = rawTemperature >> 8;
+  humidity = rawHumidity >> 8;
+  temperature = rawTemperature >> 8;
 
-    if ( rawTemperature & 0x8000 ) {
-      rawTemperature = -(int16_t)(rawTemperature & 0x7FFF);
-    }
-    temperature = ((int16_t)rawTemperature) * 0.1;
+  if ( rawTemperature & 0x8000 ) {
+    rawTemperature = -(int16_t)(rawTemperature & 0x7FFF);
   }
+  temperature = ((int16_t)rawTemperature) * 0.1;
 
   error = ERROR_NONE;
 }

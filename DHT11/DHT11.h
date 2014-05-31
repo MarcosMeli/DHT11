@@ -1,5 +1,5 @@
 /******************************************************************
-  DHT Temperature & Humidity Sensor library for Arduino.
+  DHT11 Temperature & Humidity Sensor library for Arduino.
 
   Features:
   - Support for DHT11
