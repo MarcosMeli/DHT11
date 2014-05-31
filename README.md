@@ -1,14 +1,13 @@
 DHT
 ===
 
-An Arduino library for reading the DHT family of temperature and humidity sensors.
+An Arduino library for reading the DHT11 sensor of temperature and humidity.
 
 Written by Mark Ruys, <mark@paracas.nl>.
 
 Features
 --------
-  - Support for DHT11 and DHT22, AM2302, RHT03
-  - Auto detect sensor model
+  - Support for DHT11 only
   - Low memory footprint
   - Very small code
 
@@ -16,9 +15,9 @@ Usage
 -----
 
 ```
-#include "DHT.h"
+#include "DHT11.h"
 
-DHT dht;
+DHT11 dht;
 
 void setup()
 {
@@ -36,14 +35,10 @@ void loop()
   Serial.print(dht.getTemperature());
 }
 ```
-Also check out the [example] how to read out your sensor. For all the options, see [dht.h][header].
 
 Installation
 ------------
 
-Place the [DHT][download] library folder in your `<arduinosketchfolder>/libraries/` folder. You may need to create the `libraries` subfolder if its your first library. Restart the Arduino IDE. 
+Place the [DHT11][download] library folder in your `<arduinosketchfolder>/libraries/` folder. You may need to create the `libraries` subfolder if its your first library. Restart the Arduino IDE. 
 
-[download]: https://github.com/markruys/arduino-DHT/archive/master.zip "Download DHT library"
-[example]: https://github.com/markruys/arduino-DHT/blob/master/examples/DHT_Test/DHT_Test.pde "Show DHT example"
-[header]: https://github.com/markruys/arduino-DHT/blob/master/DHT.h "Show header file"
-
+[download]: https://github.com/MarcosMeli/arduino-DHT11/archive/master.zip "Download DHT library"
