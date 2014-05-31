@@ -1,5 +1,5 @@
-DHT
-===
+DHT11
+=====
 
 An Arduino library for reading the DHT11 sensor of temperature and humidity.
 
@@ -39,6 +39,6 @@ void loop()
 Installation
 ------------
 
-Place the [DHT11][download] library folder in your `<arduinosketchfolder>/libraries/` folder. You may need to create the `libraries` subfolder if its your first library. Restart the Arduino IDE. 
+Place the [DHT11][download] folder in your `<arduinosketchfolder>/libraries/` folder. You may need to create the `libraries` subfolder if its your first library. Restart the Arduino IDE. 
 
-[download]: https://github.com/MarcosMeli/arduino-DHT11/archive/master.zip "Download DHT library"
+[download]: https://github.com/MarcosMeli/DHT11/archive/master.zip "Download DHT library"

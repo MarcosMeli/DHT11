@@ -17,7 +17,6 @@ getTemperature	KEYWORD2
 getHumidity	KEYWORD2
 getStatus	KEYWORD2
 getStatusString	KEYWORD2
-getModel	KEYWORD2
 getMinimumSamplingPeriod	KEYWORD2
 toFahrenheit  KEYWORD2
 toCelsius  KEYWORD2
