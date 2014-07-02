@@ -170,10 +170,5 @@ void DHT11::readSensor()
   humidity = rawHumidity >> 8;
   temperature = rawTemperature >> 8;
 
-  if ( rawTemperature & 0x8000 ) {
-    rawTemperature = -(int16_t)(rawTemperature & 0x7FFF);
-  }
-  temperature = ((int16_t)rawTemperature) * 0.1;
-
   error = ERROR_NONE;
 }
